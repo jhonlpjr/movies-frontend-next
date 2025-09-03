@@ -20,16 +20,18 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onCancel,
   loading,
 }) => {
-  if (!open) return null;
-
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Foco seguro en Cancel para evitar confirmar por error
   useEffect(() => {
-    modalRef.current
-      ?.querySelector<HTMLButtonElement>("[data-cancel]")
-      ?.focus();
-  }, []);
+    if (open) {
+      modalRef.current
+        ?.querySelector<HTMLButtonElement>("[data-cancel]")
+        ?.focus();
+    }
+  }, [open]);
+
+  if (!open) return null;
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") onCancel();

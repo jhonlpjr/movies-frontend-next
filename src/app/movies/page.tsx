@@ -15,6 +15,15 @@ import { MovieForm } from "@/components/MovieForm";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { moviesService } from "@/services/moviesService";
 
+interface MovieFormValues {
+  title?: string | null | undefined;
+  genre?: string[] | null;
+  year?: number | null | undefined;
+  rating?: number | null | undefined;
+  popularity?: number | null | undefined;
+  description?: string | null;
+}
+
 export default function MoviesPage() {
   // filtros UI
   const [genre, setGenre] = useState<string>("");
@@ -71,10 +80,23 @@ export default function MoviesPage() {
 
   // ...existing code...
 
-  const handleCreate = async (values: any) => {
+  const handleCreate = async (values: MovieFormValues) => {
     setLoading(true);
     try {
-      const payload = { ...values, genre: Array.isArray(values.genre) ? values.genre : values.genre ? [values.genre] : [] };
+      const payload = {
+        ...values,
+        title: typeof values.title === "string" && values.title ? values.title : "",
+        genre: Array.isArray(values.genre)
+          ? values.genre
+          : values.genre
+            ? [values.genre]
+            : values.genre === null
+              ? null
+              : undefined,
+        year: values.year === null ? undefined : values.year,
+        rating: values.rating === null ? undefined : values.rating,
+        popularity: values.popularity === null ? undefined : values.popularity,
+      };
       await moviesService.createMovie(payload);
       toast.success("Película creada");
       setShowCreate(false);
@@ -84,11 +106,24 @@ export default function MoviesPage() {
     } finally { setLoading(false); }
   };
 
-  const handleEdit = async (values: any) => {
+  const handleEdit = async (values: MovieFormValues) => {
     if (!editMovie?.id) return;
     setLoading(true);
     try {
-      const payload = { ...values, genre: Array.isArray(values.genre) ? values.genre : values.genre ? [values.genre] : [] };
+      const payload = {
+        ...values,
+        title: typeof values.title === "string" && values.title ? values.title : "",
+        genre: Array.isArray(values.genre)
+          ? values.genre
+          : values.genre
+            ? [values.genre]
+            : values.genre === null
+              ? null
+              : undefined,
+        year: values.year === null ? undefined : values.year,
+        rating: values.rating === null ? undefined : values.rating,
+        popularity: values.popularity === null ? undefined : values.popularity,
+      };
       await moviesService.updateMovie(editMovie.id, payload);
       toast.success("Película actualizada");
       setShowEdit(false);

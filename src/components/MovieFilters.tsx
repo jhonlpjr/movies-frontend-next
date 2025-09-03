@@ -39,8 +39,9 @@ export const MovieFilters: React.FC<MovieFiltersProps> = ({
           <option value="">All Genres</option>
           <option value="Action">Action</option>
           <option value="Drama">Drama</option>
-          <option value="Sci-Fi">Sci-Fi</option>
+          <option value="SciFi">SciFi</option>
           <option value="Crime">Crime</option>
+          <option value="Romance">Romance</option>
         </select>
       </div>
       <div className="mb-4">

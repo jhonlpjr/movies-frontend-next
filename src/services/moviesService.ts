@@ -16,11 +16,9 @@ type MoviesResponse = {
 
 export const moviesService = {
   async getMovies(q?: string, filters?: MoviesFilters): Promise<MoviesResponse> {
-    // ⚠️ Usa los NOMBRES que define tu API/Swagger
     const queryParams = {
       query: q ?? undefined,
       genre: filters?.genre ?? undefined,
-      // Descomenta SOLO si tu backend ya acepta estos parámetros:
       yearFrom: filters?.yearFrom ?? undefined,
       yearTo:   filters?.yearTo   ?? undefined,
       rating:   filters?.rating   ?? undefined,
@@ -28,13 +26,11 @@ export const moviesService = {
       limit:    filters?.limit    ?? undefined,
     };
 
-    // limpia undefined
     const query = Object.fromEntries(
       Object.entries(queryParams).filter(([, v]) => v !== undefined && v !== null && v !== "")
     );
 
-    // ⬅️ MUY IMPORTANTE: anidar bajo { params: { query: ... } }
-    const { data, error } = await api.GET("/api/v1/movies/search", {
+  const { data, error } = await api.GET("/api/v1/movies/search", {
       params: { query },
     });
 
@@ -47,7 +43,7 @@ export const moviesService = {
   },
 
   async getMovieById(id: string): Promise<Movie> {
-    const { data, error } = await api.GET("/api/v1/movies/{id}", {
+  const { data, error } = await api.GET("/api/v1/movies/{id}", {
       params: { path: { id } },
     });
     if (error) throw error;
@@ -55,7 +51,7 @@ export const moviesService = {
   },
 
   async createMovie(payload: components["schemas"]["CreateMovieRequest"]): Promise<Movie> {
-    const { data, error } = await api.POST("/api/v1/movies", { body: payload });
+  const { data, error } = await api.POST("/api/v1/movies", { body: payload });
     if (error) throw error;
     return data!.data as Movie;
   },
